@@ -1,0 +1,22 @@
+{
+  "name": "zing",
+  "version": "0.0.1",
+  "description": "Simple, persistent Nodejs chat app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/westonplatter/zing.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Weston Platter",
+  "license": "BSD-3",
+  "bugs": {
+    "url": "https://github.com/westonplatter/zing/issues"
+  },
+  "homepage": "https://github.com/westonplatter/zing"
+}
