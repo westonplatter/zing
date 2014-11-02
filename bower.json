@@ -1,0 +1,48 @@
+{
+  "name": "zing",
+  "version": "0.0.0",
+  "homepage": "https://github.com/westonplatter/zing",
+  "authors": [
+    "Weston Platter <westonplatter@gmail.com>"
+  ],
+  "main": "app.js",
+  "keywords": [
+    "chat"
+  ],
+  "license": "BSD-3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "install": {
+    "path": {
+      "css": "public/css",
+      "js": "public/js",
+      "eot": "public/fonts",
+      "svg": "public/fonts",
+      "ttf": "public/fonts",
+      "woff": "public/fonts"
+    },
+    "sources": {
+      "socket.io-client": "bower_components/socket.io-client/socket.io.js", 
+      "bootstrap": [
+        "bower_components/bootstrap/dist/js/bootstrap.js",
+        "bower_components/bootstrap/dist/css/bootstrap.css", 
+        "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot", 
+        "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg", 
+        "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf", 
+        "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"
+      ]
+    }
+  },
+  "dependencies": {
+    "socket.io-client": "~1.2.0",
+    "jquery": "1.10.2",
+    "bootstrap": "~3.3.0"
+  }
+}
