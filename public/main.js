@@ -47,7 +47,6 @@ $(function(){
 
   function sendMessage(){
     var message = $inputMessage.val();
-
     message = cleanInput(message);
 
     if (message && connected){
@@ -66,7 +65,32 @@ $(function(){
     addMessageElement($el, options);
   }
 
-  function addChatMesage(){}
+  function addChatMesage(data, options){
+    var $typingMessages = getTypingMessages(data);
+    options = options || {};
+
+    if ($typingMessages.length !== 0) {
+      options.fade = false;
+      $typingMessages.remove();
+    }
+
+
+    var $usernameDiv = $("<span class='username'/>")
+      .text(data.username)
+      .css("color", getUsernameColor(data.username));
+
+    var $messageBodyDiv = $("<span class='messageBody'>")
+      .text(data.message);
+
+    var typingClass = data.typing ? 'typing' : '';
+    var $messageDiv = $("<li class='message'/>")
+      .data("username", data.username)
+      .addClass(typingClass)
+      .append($usernameDiv, $messageBodyDiv);
+
+    addMessageElement($messageDiv, options);
+  }
+
   function addChatTyping(){}
   function removeChatTyping(){}
   
@@ -102,7 +126,13 @@ $(function(){
   }
 
   function updateTyping(){}
-  function getTypingMessages(data){}
+  
+  function getTypingMessages(data){
+    return $(".typing.message").filter(function(i){
+      return $(this).data("username") === data.username;
+    });
+  }
+  
   function getUsernameColor(){}
 
   $window.on("keydown", function(e){
@@ -141,7 +171,7 @@ $(function(){
     addParticipantsMessage(data);
   });
 
-  socket.on('new_message', function(data){
+  socket.on("message_new", function(data){
     addChatMesage(data);
   });
 

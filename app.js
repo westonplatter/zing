@@ -16,8 +16,6 @@ var numUsers = 0;
 io.on("connection", function(socket){
   var addUser = false;
 
-  socket.on("new_message", function(data){});
-  
   socket.on("user_add", function(username){
     socket.username = username;
 
@@ -32,6 +30,13 @@ io.on("connection", function(socket){
     socket.broadcast.emit("user_joined", {
       username: socket.username, 
       numUsers: numUsers
+    });
+  });
+  
+  socket.on("message_new", function(data){
+    socket.broadcast.emit("message_new", {
+      username: socket.username, 
+      message: data
     });
   });
   
