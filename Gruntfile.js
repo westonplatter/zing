@@ -1,7 +1,12 @@
 module.exports = function(grunt){
   grunt.initConfig({
+    
     pkg: grunt.file.readJSON('package.json'), 
-  
+    
+    jasmine_node: {
+      projectRoot: '.'
+    },
+
     watch: {
       scripts: {
         files: './resources/**/*.js', 
@@ -13,21 +18,28 @@ module.exports = function(grunt){
     }, 
     
     jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
       server: {
-        options: {
-          '-W085': true, // allow with statement for Ch3 example
-        },
+        // options: {
+        //   '-W085': true, // allow with statement
+        // },
         src: 'app.js',
       },
       frontend: {
         src: 'public/main.js',
+      }, 
+      specs: {
+        src: './specs'
       }
     }
   });
   
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  
-  grunt.registerTask('test'         , ['default']);
-  grunt.registerTask('default'      , ['jshint']);
+  grunt.loadNpmTasks('grunt-jasmine-node');
+
+  grunt.registerTask('test', ['jshint', 'jasmine_node']);
+  grunt.registerTask('default', ['jshint']);
 };
