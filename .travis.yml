@@ -1,4 +1,14 @@
 language: node_js
 
 node_js:
-  - 0.10
+- 0.10
+
+notifications: 
+  email: 
+    - secure: S8RpyEcewgl3bB1XxeoyUrFfQkX96PVOk4kqIWnO1Xzdx2AbyqVoh1Av/qFatC/o+Do0TZPfC3CLwe4NuTe5Du0r6y8R5ST2ie+nMZySTM5HGRezKOGL1HMgSUvUI3NAFungNKB6Z0+gkb3HF5aE0u51ndQL7/wDEZALubGikgs=
+
+deploy:
+  app: zing-chat
+  provider: heroku
+  api_key:
+    secure: blKHbIcK9r0t8WDfh/HuOU8LaQAmuO1auMN7l7a9f0eZ+e6aKP+IV5RR1D4CmiaFQfa+pB6K8C9iw95VFf8uEp+46lPfymGsXBPjCIXwGQI/TRrkNd1IuXCz8J6XE/ioY0fWB5/3OZYGyQtlQDjAE+gS9EL/vRgf5OvzGz/zxUg=
