@@ -8,7 +8,6 @@ server.listen(port, function() {
   console.log("Server listening on port %d", port);
 });
 
-// making the connection between zing-chat.herokuapp.com -> index.html
 app.use(express.static(__dirname + "/public"));
 
 var usernames = {};
@@ -18,7 +17,24 @@ io.on("connection", function(socket){
   var addUser = false;
 
   socket.on("new_message", function(data){});
-  socket.on("add_user", function(username){});
+  
+  socket.on("user_add", function(username){
+    socket.username = username;
+
+    usernames[username] = username;
+    numUsers ++;
+    addUser = true;
+    
+    socket.emit("login", {
+      numUsers: numUsers
+    });
+
+    socket.broadcast.emit("user_joined", {
+      username: socket.username, 
+      numUsers: numUsers
+    });
+  });
+  
   socket.on("typing", function(){});
   socket.on("typing_stopped", function(){});
   socket.on("disconnect", function(){});

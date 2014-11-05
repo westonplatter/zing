@@ -22,28 +22,134 @@ $(function(){
 
   var socket = io();
 
-  function addParticipantMessage(data){}
-  function setUsername(){}
-  function sendMessage(){}
-  function log(message, options){}
+  function addParticipantsMessage(data){
+    var message = "";
+    if (data.numUsers === 1){
+      message += "there's 1 participant";
+    } else {
+      message += "there are " + data.numUsers + " participants";
+    }
+    log(message);
+  }
+
+  function setUsername(){
+    username = cleanInput($usernameInput.val().trim());
+
+    if (username){
+      $loginPage.fadeOut();
+      $chatPage.show();
+      $loginPage.off("click");
+      $currentInput = $inputMessage.focus();
+
+      socket.emit('user_add', username);
+    }
+  }
+
+  function sendMessage(){
+    var message = $inputMessage.val();
+
+    message = cleanInput(message);
+
+    if (message && connected){
+      $inputMessage.val('');
+      addChatMesage({
+        username: username, 
+        message: message
+      });
+
+      socket.emit("message_new", message);
+    }
+  }
+  
+  function log(message, options){
+    var $el = $("<li>").addClass("log").text(message);
+    addMessageElement($el, options);
+  }
+
   function addChatMesage(){}
   function addChatTyping(){}
   function removeChatTyping(){}
-  function addMessageElement(){}
-  function clearInput(input){}
+  
+  function addMessageElement(el, options){
+    var $el = $(el);
+
+    if (!options) {
+      options = {};
+    }
+
+    if (typeof options.fade === "undefined"){
+      options.fade = true;
+    }
+
+    if (typeof options.prepend === "undefined"){
+      options.prepend = false;
+    }
+
+    if (options.fade){
+      $el.hide().fadeIn(FADE_TIME);
+    }
+    if (options.prepend){
+      $messages.prepend($el);
+    } else {
+      $messages.append($el);
+    }
+
+    $messages[0].scrollTop = $messages[0].scrollHeight;
+  }
+  
+  function cleanInput (input) {
+    return $("<div/>").text(input).text();
+  }
+
   function updateTyping(){}
   function getTypingMessages(data){}
   function getUsernameColor(){}
 
-  $window.on('keydown', function(event){});
+  $window.on("keydown", function(e){
+    if (!(e.ctrlKey || e.metaKey || e.altKey)) {
+      $currentInput.focus();
+    }
+
+    if (e.which === 13) {
+      if (username) {
+        sendMessage();
+        socket.emit("typing_stopped");
+        typing = false;
+      } else {
+        setUsername();
+      }
+    }
+  });
 
   $inputMessage.on('input', function(e){});
-  $loginPage.on('click', function(e){});
-  $inputMessage.on('click', function(e){});
 
-  socket.on('login', function(data){});
-  socket.on('new_message', function(data){});
-  socket.on('user_joined', function(data){});
+  $loginPage.on('click', function(e){
+    $currentInput.focus();
+  });
+
+  $inputMessage.on('click', function(e){
+    $inputMessage.focus();
+  });
+
+  socket.on("login", function(data){
+    connected = true;
+    var message = "Welcome to --ZING--> chat";
+    log(message, {
+      prepend: true
+    });
+
+    addParticipantsMessage(data);
+  });
+
+  socket.on('new_message', function(data){
+    addChatMesage(data);
+  });
+
+  socket.on('user_joined', function(data){
+    log(data.username + "joined");
+    addParticipantsMessage(data);
+  });
+
   socket.on('user_left', function(data){});
   socket.on('typing', function(data){});
   socket.on('typing_stopped', function(data){});
