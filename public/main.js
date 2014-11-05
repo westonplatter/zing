@@ -74,7 +74,6 @@ $(function(){
       $typingMessages.remove();
     }
 
-
     var $usernameDiv = $("<span class='username'/>")
       .text(data.username)
       .css("color", getUsernameColor(data.username));
@@ -91,8 +90,17 @@ $(function(){
     addMessageElement($messageDiv, options);
   }
 
-  function addChatTyping(){}
-  function removeChatTyping(){}
+  function addChatTyping(data){
+    data.typing = true
+    data.message = "is typing";
+    addChatMesage(data);
+  }
+
+  function removeChatTyping(data){
+    getTypingMessages(data).fadeOut(function(){
+      $(this).remove();
+    });
+  }
   
   function addMessageElement(el, options){
     var $el = $(el);
@@ -125,7 +133,24 @@ $(function(){
     return $("<div/>").text(input).text();
   }
 
-  function updateTyping(){}
+  function updateTyping(){
+    if(connected) {
+      if(!typing) {
+        typing = true;
+        socket.emit("typing");
+      }
+      lastTypingTime = (new Date()).getTime();
+
+      setTimeout(function(){
+        var typingTimer = (new Date()).getTime();
+        var timeDiff = typingTimer - lastTypingTime;
+        if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
+          socket.emit("typing_stopped");
+          typing = false
+        }
+      }, TYPING_TIMER_LENGTH);
+    }
+  }
   
   function getTypingMessages(data){
     return $(".typing.message").filter(function(i){
@@ -151,7 +176,9 @@ $(function(){
     }
   });
 
-  $inputMessage.on('input', function(e){});
+  $inputMessage.on('input', function(e){
+    updateTyping();
+  });
 
   $loginPage.on('click', function(e){
     $currentInput.focus();
@@ -176,11 +203,17 @@ $(function(){
   });
 
   socket.on('user_joined', function(data){
-    log(data.username + "joined");
+    log(data.username + " " + "joined");
     addParticipantsMessage(data);
   });
 
   socket.on('user_left', function(data){});
-  socket.on('typing', function(data){});
-  socket.on('typing_stopped', function(data){});
+    
+  socket.on('typing', function(data){
+    addChatTyping(data);
+  });
+  
+  socket.on('typing_stopped', function(data){
+    removeChatTyping(data);
+  });
 });

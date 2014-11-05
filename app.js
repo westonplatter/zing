@@ -40,7 +40,17 @@ io.on("connection", function(socket){
     });
   });
   
-  socket.on("typing", function(){});
-  socket.on("typing_stopped", function(){});
+  socket.on("typing", function(){
+    socket.broadcast.emit("typing", {
+      username: socket.username
+    })
+  });
+
+  socket.on("typing_stopped", function(){
+    socket.broadcast.emit("typing_stopped", {
+      username: socket.username
+    })
+  });
+
   socket.on("disconnect", function(){});
 });
