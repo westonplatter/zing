@@ -1,4 +1,4 @@
-$(function(
+$(function(){
   var FADE_TIME = 150;
   var TYPING_TIMER_LENGTH = 400;
   var COLORS = [
@@ -47,4 +47,4 @@ $(function(
   socket.on('user_left', function(data){});
   socket.on('typing', function(data){});
   socket.on('typing_stopped', function(data){});
-));
+});
