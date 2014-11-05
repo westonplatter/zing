@@ -17,9 +17,9 @@ var numUsers = 0;
 io.on("connection", function(socket){
   var addUser = false;
 
-  socket.on("new message", function(data){});
-  socket.on("add user", function(username){});
+  socket.on("new_message", function(data){});
+  socket.on("add_user", function(username){});
   socket.on("typing", function(){});
-  socket.on("stop typing", function(){});
+  socket.on("typing_stopped", function(){});
   socket.on("disconnect", function(){});
 });
