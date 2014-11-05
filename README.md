@@ -20,8 +20,15 @@ Simple setup
 
 ## testng
 
-None yet
+Proudly tested via TravisCI, [travis-ci.org/westonplatter/zing](https://travis-ci.org/westonplatter/zing)
 
 ## deployment
 
-Use heroku
+Upon successful TravisCI test run, we deploy to heroku, [zing-chat.herokuapp.com](http://zing-chat.herokuapp.com)
+
+Yep, "Continuous Deployment" for the win!
+
+
+## credit
+
+We totally copied the [Socket.io demo chat app](https://github.com/Automattic/socket.io/tree/master/examples/chat) for the basic app structure.
