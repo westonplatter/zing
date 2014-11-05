@@ -1,6 +1,6 @@
 {
   "name": "zing",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple, persistent Nodejs chat app",
   "main": "index.js",
   "scripts": {

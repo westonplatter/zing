@@ -14,14 +14,14 @@ var usernames = {};
 var numUsers = 0;
 
 io.on("connection", function(socket){
-  var addUser = false;
+  var addedUser = false;
 
   socket.on("user_add", function(username){
     socket.username = username;
 
     usernames[username] = username;
     numUsers ++;
-    addUser = true;
+    addedUser = true;
     
     socket.emit("login", {
       numUsers: numUsers
@@ -43,14 +43,25 @@ io.on("connection", function(socket){
   socket.on("typing", function(){
     socket.broadcast.emit("typing", {
       username: socket.username
-    })
+    });
   });
 
   socket.on("typing_stopped", function(){
     socket.broadcast.emit("typing_stopped", {
       username: socket.username
-    })
+    });
   });
 
-  socket.on("disconnect", function(){});
+  socket.on('disconnect', function () {
+    if (addedUser) {
+      var username = socket.username;
+      delete usernames[username];
+      --numUsers;
+      
+      socket.broadcast.emit("user_disconnected", {
+        username: username, 
+        numUsers: numUsers
+      });
+    }
+  });
 });

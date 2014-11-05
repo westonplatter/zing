@@ -91,7 +91,7 @@ $(function(){
   }
 
   function addChatTyping(data){
-    data.typing = true
+    data.typing = true;
     data.message = "is typing";
     addChatMesage(data);
   }
@@ -146,7 +146,7 @@ $(function(){
         var timeDiff = typingTimer - lastTypingTime;
         if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
           socket.emit("typing_stopped");
-          typing = false
+          typing = false;
         }
       }, TYPING_TIMER_LENGTH);
     }
@@ -214,7 +214,11 @@ $(function(){
     addParticipantsMessage(data);
   });
 
-  socket.on('user_left', function(data){});
+  socket.on("user_disconnected", function(data){
+    log(data.username + " left");
+    addParticipantsMessage(data);
+    removeChatTyping();
+  });
     
   socket.on('typing', function(data){
     addChatTyping(data);
